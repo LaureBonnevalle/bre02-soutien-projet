@@ -2,7 +2,8 @@
 
 class UserManager extends AbstractManager {
 
-    public function __construct() {
+    public function __construct() 
+    {
         // J'appelle le constructeur de l'AbstractManager pour qu'il initialise la connexion à la DB
         parent::__construct();
     }
@@ -22,5 +23,25 @@ class UserManager extends AbstractManager {
         $user->setId($this->db->lastInsertId());
 
         return $user;
+    }
+    
+    public function findUserByEmail(string $email): ?User 
+    {
+        $query = $this->db->prepare("SELECT * FROM users WHERE email = :email");
+        $parameters = [
+            "email" => $email
+            ];
+            
+        $query->execute($parameters);
+
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return new User($data['email'], $data['password'], $data['role']);
+        }
+        else 
+        {
+        return null;
+        }
     }
 }
