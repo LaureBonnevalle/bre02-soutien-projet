@@ -1,13 +1,16 @@
 {% extends 'front/layout.html.twig' %}
 
 {% block main %}
-    {% block erreur %}
-        <p>{{ session.error_message }}</p>
-        <p>{{ session.message }}</p>
-    {% endblock %}
+    
     <main class="container py-5">
+        {% if  session.error_message is not null %}
+            <div class="alert">
+            <p>{{ session.error_message }}</p>
+            <i class="fa-solid fa-xmark"></i>
+            </div>
+        {% endif %}
         <form action="index.php?route=check-inscription" method="post">
-            <input type="hidden" id="csrf_token" name="csrf_token" value="" />
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{session.csrf}}" />
             <fieldset>
                 <label for="email" class="form-label">
                     Email

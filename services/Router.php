@@ -10,6 +10,8 @@ class Router {
     {
        $this->dc = new DefaultController();
        $this->ac = new AuthController();
+       $this->uc = new UserController();
+       $this->adc = new AdminController();
     }
 
     public function handleRequest(? string $route) : void {
@@ -35,18 +37,57 @@ class Router {
         }
         else if ($route === 'check-connexion')
         {
-            echo "je dois afficher la page d'inscription";
             $this->ac->checkLogin();
         }
         else if ($route === 'deconnexion')
         {
-            echo "je dois afficher la page de connexion";
+            echo "je dois afficher la page d' accueil";
             $this->ac->logOut();
         }
-        else if ($route === 'homepage_user')
+        else if ($route === 'page-perso')
         {
-            echo "je dois afficher la page de connexion";
-            $this->dc->homepageUser();
+            echo "je dois afficher la page perso";
+            $this->dc->home();
+        }
+        else if ($route = 'admin')
+        {
+            $this->adc->home();
+        }
+        else if ($route = 'admin-connexion')
+        {
+            $this->adc->login();
+        }
+        else if ($route = 'admin-check-connexion')
+        {
+            $this->adc->checkLogin();
+        }
+        else if ($route = 'admin-create-user')
+        {
+            $this->uc->create();
+        }
+        else if ($route = 'admin-check-create-user')
+        {
+            $this->uc->checkCreate();
+        }
+        else if ($route = 'admin-edit-user')
+        {
+            $this->uc->edit();
+        }
+        else if ($route = 'admin-check-edit-user')
+        {
+            $this->uc->checkEdit();
+        }
+        else if ($route = 'admin-delete-user')
+        {
+           $this->uc->delete(); 
+        }
+        else if ($route = 'admin-list-user')
+        {
+            $this->uc->list();
+        }
+        else if ($route = 'admin-show-user')
+        {
+            $this->uc->show();
         }
         else
         {

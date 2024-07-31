@@ -11,6 +11,7 @@ class AuthController extends AbstractController {
     
     public function register() : void
     {
+        unset($_SESSION["error_message"]);
         $this->render('front/register.html.twig', []);
     }
     
@@ -23,13 +24,15 @@ class AuthController extends AbstractController {
         $this->um->createUser($user);
         
         if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST['confirm_password']) && isset($_POST['csrf_token']))
-        {
-            if (isset($_POST["csrf-token"]) && $tokenManager->validateCSRFToken($_POST["csrf-token"]))
+        {   
+            
+            $tokenManager= new CSRFTokenManager ();
+            if (isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
             {
                 /*echo"<pre>";
                 var_dump($_POST['csrf-token']);
                 echo"</pre>";*/
-                if ($this->um->finByEmail() === 0) // ??? kézako
+                if ($this->um->finByEmail() === 0) // ??? kézako ben si l'utilisateur est retrouvé par son mail en tt cas ça marche ^^
                 {
                     if ($_POST['password']=== $_POST['confirm_password'])
                     {
@@ -37,43 +40,47 @@ class AuthController extends AbstractController {
                         {
                              $user = new User(null, $email, $password, $role = "USER");
                              $um->createUser($user);
-                             header("Location: index.php?route=login");
+                             
+                             unset($_SESSION["error_message"]);
+                             
                              $_SESSION['message']="vous êtes inscrit";
+                             header("Location: index.php?route=connexion");
                         } 
                         else
                         {
-                            header("Location: index.php?route=register");
-                            $_SESSION[error_message]="le mot de passe n'est pas assez fort" ;
+                            header("Location: index.php?route=inscription");
+                            $_SESSION['error_message']="le mot de passe n'est pas assez fort" ;
                         }
                     }
                     else
                     {
-                        header("Location: index.php?route=register");
-                        $_SESSION[error_message]="les mots de passe ne correspondent pas" ; 
+                        header("Location: index.php?route=inscription");
+                        $_SESSION['error_message']="les mots de passe ne correspondent pas" ; 
                     }
                 }
                 else
                 {
-                    header("Location: index.php?route=register");
-                    $_SESSION[error_message]="un compte existe déja avec cette adresse mail" ;
+                    header("Location: index.php?route=inscription");
+                    $_SESSION['error_message']="un compte existe déja avec cette adresse mail" ;
                 }
                 
             }
             else
             {
-                header("Location: index.php?route=register");
-                $_SESSION[error_message]="erreur token" ; 
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="erreur token" ; 
             }
         }
         else
         {
-            header("Location: index.php?route=register");
-            $_SESSION[error_message]="Vous n'avez pas rempli tous les champs"; 
+            header("Location: index.php?route=inscription");
+            $_SESSION['error_message']="Vous n'avez pas rempli tous les champs"; 
         }
     } 
     
     public function login() : void
     {
+        unset($_SESSION["error_message"]);
         $this->render('front/login.html.twig', []);
     }
     
@@ -83,9 +90,12 @@ class AuthController extends AbstractController {
         $user = $this->um->findUserByEmail($_POST['email']);
         var_dump($user);
         
+        
         if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST['csrf_token']))
         {
-            if (isset($_POST["csrf-token"]) && $tokenManager->validateCSRFToken($_POST["csrf-token"]))
+            $tokenManager= new CSRFTokenManager ();
+            
+            if (isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
             {
                 /*echo"<pre>";
                 var_dump($_POST['csrf-token']);
@@ -98,32 +108,33 @@ class AuthController extends AbstractController {
                         if (password_verify($_POST['password'], $user->getPassword()))
                         { 
                             
+                            unset($_SESSION["error_message"]);
                             $_SESSION["user"] = $user->getId()->getRole();
-                            header("Location: index.php?route=homepage_user");
-                            $_SESSION[message]="vous êtes connecté" ;
+                            header("Location: index.php?route=accueil");
+                            $_SESSION['error-message']="vous êtes connecté" ;
                         }
                         else
                         {
-                            header("Location: index.php?route=login");
-                            $_SESSION[error_message]="mot de passe incorrect" ;
+                            header("Location: index.php?route=connexion");
+                            $_SESSION['error_message']="mot de passe incorrect" ;
                         }
                     }
                     else
                     {
-                        header("Location: index.php?route=login");
-                        $_SESSION[error_message]="le compte n'existe pas";  
+                        header("Location: index.php?route=connexion");
+                        $_SESSION['error_message']="le compte n'existe pas";  
                     }
             }
             else
             {
-                header("Location: index.php?route=login");
-                $_SESSION[error_message]="Vous n'avez pas rempli tous les champs";
+                header("Location: index.php?route=connexion");
+                $_SESSION['error_message']="Problème de token";
             }
         }
         else
         {
-            header("Location: index.php?route=login");
-            $_SESSION[error_message]="Vous n'avez pas rempli tous les champs";
+            header("Location: index.php?route=connexion");
+            $_SESSION['error_message']="Vous n'avez pas rempli tous les champs";
         }
         
         
@@ -132,7 +143,8 @@ class AuthController extends AbstractController {
     public function logout() : void
     {
         session_destroy();
-        header("Location: index.php?route=home");
-        $_SESSION[message]="Vous êtes déconnectés";
+        unset($_SESSION["error_message"]);
+        header("Location: index.php?route=accueil");
+        $_SESSION['error_message']="Vous êtes déconnectés";
     }
 }
