@@ -44,51 +44,146 @@ class Router {
             echo "je dois afficher la page d' accueil";
             $this->ac->logOut();
         }
-        else if ($route === 'page-perso')
+        else if ($route === 'page-perso' && isset($get['user_id']))
         {
+          if(isset($_SESSION['user']) && $_SESSION['user']->getId() === intval($get['user_id'])) 
+          {
             echo "je dois afficher la page perso";
-            $this->dc->home();
+            $this->dc->homepageUser();
+          }
+          else
+          {
+            // c'est pas bon : redirection avec un header('Location:')
+            header("Location: index.php?route=inscription");
+            $_SESSION['error_message']="vous n'avez pas les droits d'accés" ; 
+          }
         }
         else if ($route = 'admin')
         {
-            $this->adc->home();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->adc->home();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-connexion')
         {
-            $this->adc->login();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                this->adc->login();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-check-connexion')
         {
-            $this->adc->checkLogin();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->adc->checkLogin();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-create-user')
         {
-            $this->uc->create();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->create();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-check-create-user')
         {
-            $this->uc->checkCreate();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->checkCreate();
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-edit-user')
         {
-            $this->uc->edit();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->edit();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
         }
         else if ($route = 'admin-check-edit-user')
         {
-            $this->uc->checkEdit();
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->checkEdit();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
         }
         else if ($route = 'admin-delete-user')
         {
-           $this->uc->delete(); 
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->delete();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         }
         else if ($route = 'admin-list-user')
         {
-            $this->uc->list();
+            
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->list();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
         }
         else if ($route = 'admin-show-user')
         {
-            $this->uc->show();
-        }
+            if(isset($_SESSION['user']) && $_SESSION['user']->getRole() === "ADMIN")
+            {
+                $this->uc->show();
+            }
+            else
+            {
+                header("Location: index.php?route=inscription");
+                $_SESSION['error_message']="vous n'avez pas les droits d'accés" ;  
+            }
+            
         else
         {
             // le code si c'est aucun des cas précédents ( === page 404)

@@ -27,10 +27,19 @@ class UserController extends AbstractController
     }
 
     public function list() : void {
-        $this->render("admin/users/list.html.twig", []);
+        $um = new UserManager();
+        
+        $userlist= $this->um->findAll();
+        
+        $this->render("admin/users/list.html.twig", [$userlist]);
     }
 
     public function show() : void {
         $this->render("admin/users/show.html.twig", []);
+    }
+    
+    public function findAllUsers(): array
+    {
+        
     }
 }
