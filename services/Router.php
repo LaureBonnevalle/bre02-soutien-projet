@@ -19,6 +19,11 @@ class Router {
             echo "je dois afficher la page d'accueil";
             $this->dc->homepage();
         }
+        /*else if ($route= "accueil")
+        {
+            echo "je dois afficher la page d'accueil";
+            $this->dc->homepage();
+        }*/
         else if ($route === 'inscription')
         {
             echo "je dois afficher la page d'inscription";
@@ -41,11 +46,11 @@ class Router {
         else if ($route === 'deconnexion')
         {
             echo "je dois afficher la page de connexion";
-            $this->ac->logOut();
+            $this->ac->logout();
         }
         else if ($route === 'homepage_user')
         {
-            echo "je dois afficher la page de connexion";
+            echo "je dois afficher la page perso du user";
             $this->dc->homepageUser();
         }
         else

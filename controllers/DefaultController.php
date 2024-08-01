@@ -16,6 +16,7 @@ class DefaultController extends AbstractController
     {
         $this->render('front/error404.html.twig', []);
     }
+    
     public function homepageUser() : void
     {
         $this->render('front/homepage_user.html.twig', []);
