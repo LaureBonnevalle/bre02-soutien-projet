@@ -8,9 +8,17 @@
         {% endblock %}
 
 {% block main %}
-    {% block erreur %}
-        <p>{{ session.error_message }}</p>
-        <p>{{ session.message }}</p>
-    {% endblock %}
+    {% if  session.error_message is not null %}
+            <div class="alert">
+            <p>{{ session.error_message }}</p>
+            <i class="fa-solid fa-xmark"></i>
+            </div>
+    {% endif %}
+    {% if  message is not null %}
+            <div class="alert">
+            <p>{{ message }}</p>
+            <i class="fa-solid fa-xmark"></i>
+            </div>
+    {% endif %}
     <h1>Page d'accueil</h1>
 {% endblock %}

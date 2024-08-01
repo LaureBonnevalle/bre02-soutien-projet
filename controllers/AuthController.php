@@ -99,7 +99,7 @@ class AuthController extends AbstractController {
                             unset($_SESSION["error_message"]);
                             
                             $_SESSION['error_message']="vous êtes connecté" ;
-                            $this->redirect("index.php");
+                            header("Location: index.php");
                         }
                         else
                         {
@@ -131,8 +131,8 @@ class AuthController extends AbstractController {
     public function logout() : void
     {
         session_destroy();
-        $_SESSION['errot_message']="Vous êtes déconnecté.";
-        $this->redirect("index.php");
+        $message="Vous êtes déconnecté.";
+        header("Location: index.php");
                     
     }
 }
