@@ -37,7 +37,10 @@ class AuthController extends AbstractController {
                             $user = new User($email, $password, 'USER');
                             $um->createUser($user); 
                             $_SESSION["user"] = $user->getId();
+                            $_SESSION['role'] = $user->getRole();
+                            
                             unset($_SESSION["error_message"]);
+                            
                             $_SESSION["error_message"] = "Vous êtes inscrit. Vous pouvez vous connecter.";
                             $this->redirect("connexion");
                         }

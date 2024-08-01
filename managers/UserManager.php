@@ -51,14 +51,14 @@ class UserManager extends AbstractManager {
         $query->execute();
         $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        $userList = [];
+        $userlist = [];
         foreach ($users as $user) 
         {
             $item = new User($user["email"], $user["password"], $user["role"]);
             $item->setId($user["id"]);
-            $userList[] = $item;
+            $userlist[] = $item;
         }
 
-        return $userList;
+        return $userlist;
     }
 }
