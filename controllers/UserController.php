@@ -95,10 +95,9 @@ class UserController extends AbstractController
         $this->render("admin/users/list.html.twig", [$userlist]);
     }
 
-    public function show() : void 
-    {
-        $this->render("admin/users/show.html.twig", []);
-    }
+    public function show(int $id) : void {
+    $this->render("admin/users/show.html.twig", []);
+}
     
     
 }

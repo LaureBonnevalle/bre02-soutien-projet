@@ -29,15 +29,19 @@ class AuthController extends AbstractController {
                     {
                         $um = new UserManager();
                         $user = $um->findUserByEmail($_POST["email"]);
+                        
 
                         if($user === null)
                         {
-                            $email = htmlspecialchars($_POST["email"]);
+                            $email = $_POST["email"];
                             $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
                             $user = new User($email, $password, 'USER');
                             $um->createUser($user); 
                             $_SESSION["user"] = $user->getId();
                             $_SESSION['role'] = $user->getRole();
+                            
+                            var_dump($password);
+                            die;
                             
                             unset($_SESSION["error_message"]);
                             
@@ -90,19 +94,23 @@ class AuthController extends AbstractController {
             {
                 $um = new UserManager();
                 $user = $um->findUserByEmail($_POST["email"]);
+                
+                var_dump($user);
+                //die;
 
                 if($user !== null)
                     {
                         if (password_verify($_POST['password'], $user->getPassword()))
                         { 
                             
-                            $_SESSION["user"] = $user->getId();
-                            $_SESSION["user"] = $user->getRole();
+                            $_SESSION["user_id"] = $user->getId();
+                            $_SESSION["user_role"] = $user->getRole();
                             
                             unset($_SESSION["error_message"]);
                             
                             $_SESSION['error_message']="vous êtes connecté" ;
-                            header("Location: index.php");
+                            $this->redirect("home"); // why ?
+                            
                         }
                         else
                         {

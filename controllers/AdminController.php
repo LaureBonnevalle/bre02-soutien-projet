@@ -31,13 +31,13 @@ class AdminController extends AbstractController
                         if (password_verify($_POST['password'], $user->getPassword()))
                         { 
                             
-                            $_SESSION["user"] = $user->getId();
-                            $_SESSION["user"] = $user->getRole();
+                            $_SESSION["user_id"] = $user->getId();
+                            $_SESSION["user_role"] = $user->getRole();
                             
                             unset($_SESSION["error_message"]);
                             
-                            $_SESSION['error_message']="vous êtes connecté" ;
-                            $this->redirect("admin-list-user");
+                            $_SESSION['error_message']="vous êtes connecté sur la page admin" ;
+                            $this->redirect("admin");
                         }
                         else
                         {
@@ -66,4 +66,6 @@ class AdminController extends AbstractController
         
     }
     }
+    
+    
 }

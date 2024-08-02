@@ -45,7 +45,7 @@ class Router {
         }
         else if ($route === 'check-connexion')
         {
-            echo "je dois afficher la page d'inscription";
+            
             $this->ac->checkLogin();
         }
         //pour estreindre l'acces des routes aux utilisateurs connectés
@@ -68,16 +68,15 @@ class Router {
             echo "je dois afficher la page home";
             $this->ac->logout();
         }
-        else if ($route === 'homepage_user')
+        else if ($route === 'home')
         {
             echo "je dois afficher la page perso du user";
-            $this->dc->homepageUser();
+            $this->dc->home();
         }
         else if ($route = "admin")
         {
             $this->checkAdminAccess();
-            $this-uc->list();
-            
+            $this->adc->home();
         }
         else if ($route = 'admin-connexion')
         {
@@ -147,13 +146,11 @@ class Router {
             
         }
     }
-        
-        function checkAdminAccess(): void
+     function checkAdminAccess(): void
         {
-            if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN")
+            if(isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION["user_role"] === "ADMIN")
             {
-                // c'est bon
-                //$this->adc->home();
+                
             }
             else
             {
@@ -161,6 +158,6 @@ class Router {
                      $_SESSION['error_message']="vous n'avez pas les droits d'accès";
                      header("Location: index.php?route=connexion");
             }
-        }
+        }   
 }
 

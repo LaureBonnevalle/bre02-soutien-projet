@@ -19,12 +19,6 @@
         </header>
 
         {% block main %}
-        {% if  session.error_message is not null %}
-            <div class="alert">
-            <p>{{ session.error_message }}</p>
-            <i class="fa-solid fa-xmark"></i>
-            </div>
-        {% endif %}
         {% endblock %}
 
         <footer>
